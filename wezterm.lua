@@ -6,66 +6,52 @@ config.default_prog = { "pwsh" }
 config.enable_kitty_keyboard = true
 config.keys = {
     {
-        key = "t",
-        mods = "ALT",
-        action = wezterm.action.SpawnTab("CurrentPaneDomain"),
-    },
-    {
-        key = "w",
-        mods = "ALT",
+        mods = "ALT", key = "w",
         action = wezterm.action.CloseCurrentPane{ confirm = true },
     },
     {
-        key = "s",
-        mods = "ALT",
-        action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" },
+        mods = "ALT", key = "s",
+        action = wezterm.action.SplitVertical{},
     },
     {
-        key = "d",
-        mods = "ALT",
-        action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" },
+        mods = "ALT", key = "d",
+        action = wezterm.action.SplitHorizontal{},
     },
     {
-        key = "h",
-        mods = "ALT",
-        action = wezterm.action.ActivatePaneDirection("Left"),
-    },
-    {
-        key = "j",
-        mods = "ALT",
-        action = wezterm.action.ActivatePaneDirection("Down"),
-    },
-    {
-        key = "k",
-        mods = "ALT",
-        action = wezterm.action.ActivatePaneDirection("Up"),
-    },
-    {
-        key = "l",
-        mods = "ALT",
-        action = wezterm.action.ActivatePaneDirection("Right"),
+        mods = "ALT", key = "a",
+        action = wezterm.action.PaneSelect{ mode = "SwapWithActive" },
     },
 }
--- "ALT + number" keys to navigate tabs
+
+-- Alt-hjkl to navigate panes in a tab
+for key, direction in pairs{h = "Left", j = "Down", k = "Up", l = "Right"} do
+    table.insert(config.keys, {
+        mods = "ALT", key = key,
+        action = wezterm.action.ActivatePaneDirection(direction),
+    })
+end
+
+-- Alt-number to navigate tabs
 for i = 0, 9 do
     table.insert(config.keys, {
-        key = tostring((i + 1) % 10),
-        mods = "ALT",
+        mods = "ALT", key = tostring((i + 1) % 10),
         action = wezterm.action.ActivateTab(i),
     })
 end
--- CTRL+ALT + number to move to that position
+
+-- Ctrl-Alt-number to move a tab
 for i = 0, 9 do
     table.insert(config.keys, {
-        key = tostring((i + 1) % 10),
-        mods = "CTRL|ALT",
+        mods = "CTRL|ALT", key = tostring((i + 1) % 10),
         action = wezterm.action.MoveTab(i),
     })
 end
 
 --config.color_scheme = ""
-config.font = wezterm.font("JetBrains Mono")
-config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
+config.font = wezterm.font{
+    family = "JetBrains Mono",
+    harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+}
 
 config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
 config.window_padding = {
