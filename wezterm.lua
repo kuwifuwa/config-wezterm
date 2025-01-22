@@ -31,6 +31,14 @@ for key, direction in pairs{h = "Left", j = "Down", k = "Up", l = "Right"} do
     })
 end
 
+-- Alt-HJKL to resize panes
+for key, direction in pairs{H = "Left", J = "Down", K = "Up", L = "Right"} do
+    table.insert(config.keys, {
+        mods = "ALT", key = key,
+        action = wezterm.action.AdjustPaneSize{ direction, 1 },
+    })
+end
+
 -- Alt-number to navigate tabs
 for i = 0, 9 do
     table.insert(config.keys, {
