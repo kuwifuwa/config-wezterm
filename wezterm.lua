@@ -21,6 +21,11 @@ config.keys = {
         mods = "ALT", key = "a",
         action = wezterm.action.PaneSelect{ mode = "SwapWithActive" },
     },
+    -- Fix Ctrl-Space not being sent to CLI
+    {
+        mods = "CTRL", key = " ",
+        action = wezterm.action.SendKey{ mods = "CTRL", key = " " },
+    },
 }
 
 -- Alt-hjkl to navigate panes in a tab
