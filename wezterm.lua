@@ -1,7 +1,14 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-config.default_prog = { "pwsh" }
+local is_linux <const> = wezterm.target_triple:match("linux")
+local is_windows <const> = wezterm.target_triple:match("windows")
+
+if is_linux then
+    config.default_prog = { "bash" }
+elseif is_windows then
+    config.default_prog = { "pwsh" }
+end
 
 config.enable_kitty_keyboard = true
 config.keys = {
@@ -67,7 +74,9 @@ config.font = wezterm.font{
 }
 config.font_size = 13.5
 
-config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
+if is_windows then
+    config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
+end
 config.window_padding = {
     left = 0,
     right = 0,
